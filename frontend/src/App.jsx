@@ -6,7 +6,7 @@ import About from './pages/About'
 import Login from './pages/Login'
 import MyAppointment from './pages/MyAppointment'
 import MyProfile from './pages/MyProfile'
-import Navbar from './components/Navbar/Navbar'
+import Navbar from './components/Navbar'
 const App = () => {
   return (
     <div className="mx-4 sm:mx-[10%]">
