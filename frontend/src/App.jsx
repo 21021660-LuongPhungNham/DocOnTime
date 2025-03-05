@@ -1,12 +1,14 @@
-import { Routes, Route } from 'react-router-dom'
-import Home from './pages/Home'
-import Doctors from './pages/Doctors'
-import Contact from './pages/Contact'
+import { Route, Routes } from 'react-router-dom'
+import Footer from './components/Footer'
+import Navbar from './components/Navbar'
 import About from './pages/About'
+import Appointment from './pages/Appointment'
+import Contact from './pages/Contact'
+import Doctors from './pages/Doctors'
+import Home from './pages/Home'
 import Login from './pages/Login'
 import MyAppointment from './pages/MyAppointment'
 import MyProfile from './pages/MyProfile'
-import Navbar from './components/Navbar'
 const App = () => {
   return (
     <div className="mx-4 sm:mx-[10%]">
@@ -20,8 +22,9 @@ const App = () => {
         <Route path='/about' element={<About />}></Route>
         <Route path='/my-profile' element={<MyProfile />}></Route>
         <Route path='/my-appointment' element={<MyAppointment />}></Route>
-        <Route path='/appointment/:docId' element={<Doctors />}></Route>
+        <Route path='/appointment/:docId' element={<Appointment />}></Route>
       </Routes>
+      <Footer/>
     </div>
   )
 }

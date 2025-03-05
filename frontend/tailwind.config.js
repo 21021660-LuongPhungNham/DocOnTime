@@ -1,13 +1,19 @@
+/** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "./src/**/*.{js,ts,jsx,tsx}", // Xóa "./index.html" nếu dùng CRA
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
     extend: {
       colors: {
         primary: "#5f6FFF",
       },
+      gridTemplateColumns: {
+        auto: "repeat(auto-fill, minmax(250px, 1fr))",
+      },
     },
   },
   plugins: [],
 };
+

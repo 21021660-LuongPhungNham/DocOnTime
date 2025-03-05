@@ -1,7 +1,64 @@
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
+import { assets } from "../assets/assets";
+
 const Appointment = () => {
-    return (
-        <div></div>
-    )
+    const { docId } = useParams()
+    const { doctors, currencySymbol } = useContext(AppContext)
+
+    const [docInfo, setDocInfo] = useState(null)
+
+    const fetchDocInfo = async () => {
+        const docInfo = doctors.find(doc => doc._id === docId);
+        setDocInfo(docInfo);
+    };
+
+
+    useEffect(() => {
+        if (doctors.length > 0) {
+            fetchDocInfo();
+        }
+    }, [doctors, docId]);
+
+    return docInfo && (
+        <div>
+            {/* .....doc detail......... */}
+            <div className="flex flex-col sm:flex-row gap-4">
+                <div className="bg-primary w-full sm:max-w-72 rounded-lg">
+                    {docInfo ? (
+                        <img src={docInfo.image} alt="Doctor" />
+                    ) : (
+                        <p>null</p>
+                    )}
+                </div>
+                <div className="flex-1 border border-gray-400 rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0">
+                    {/* ........doc Info............ */}
+                    <p className="flex items-center gap-2 text-2xl font-medium text-gray-900">
+                        {docInfo.name}
+                        <img className='w-5' src={assets.verified_icon} alt="" />
+                    </p>
+                    <div className="flex items-center gap-2 text-sm mt-1">
+                        <p>{docInfo.degree} - {docInfo.speciality}</p>
+                        <button className="py-0.5 px-2 border text-xs rounded-full">{docInfo.experience}</button>
+                    </div>
+
+                    {/* ......doc about...... */}
+                    <div>
+                        <p className="flex items-center gap-1 text-sm font-medium text-gray-900 mt-3">
+                            About <img src={assets.info_icon} alt="" />
+                        </p>
+                        <p className="text-sm text-gray-500 max-w-[700px] mt-1">
+                            {docInfo.about}
+                        </p>
+                    </div>
+                    <p>
+                        Appointment fee: <span>{currencySymbol}{docInfo.fees}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default Appointment
