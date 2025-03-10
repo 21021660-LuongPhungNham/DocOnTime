@@ -8,23 +8,23 @@ const Footer = () => {
                 {/* .......left......... */}
                 <div className="">
                     <img className="mb-5 w-40" src={assets.logo} alt="" />
-                    <p className="w-full md:w-2/3 text-gray-600 leading-6">Schedule appointments quickly, connect with doctors easily.</p>
+                    <p className="w-full md:w-2/3 text-gray-600 leading-6">Đặt lịch nhanh chóng, kết nối với các bác sĩ dễ dàng.</p>
                 </div>
 
                 {/* .......left......... */}
                 <div>
-                    <p className="text-xl font-medium mb-5">COMPANY</p>
+                    <p className="text-xl font-medium mb-5">CÔNG TY</p>
                     <ul className="flex flex-col gap-2 text-gray-600">
-                        <li>Home</li>
-                        <li>About us</li>
-                        <li>Contact us</li>
-                        <li>Privacy policy</li>
+                        <li>Trang chủ</li>
+                        <li>Giới thiệu</li>
+                        <li>Liên hệ</li>
+                        <li>Chính sách</li>
                     </ul>
                 </div>
 
                 {/* .......left......... */}
                 <div>
-                    <p className="text-xl font-medium mb-5">GET IN TOUCH</p>
+                    <p className="text-xl font-medium mb-5">LIÊN HỆ</p>
                     <ul className="flex flex-col gap-2 text-gray-600">
                         <li>+84 012-3456-789</li>
                         <li>123@gmail.com</li>

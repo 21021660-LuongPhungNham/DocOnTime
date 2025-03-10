@@ -101,22 +101,19 @@ const Appointment = () => {
 
                     {/* ......doc about...... */}
                     <div>
-                        <p className="flex items-center gap-1 text-sm font-medium text-gray-900 mt-3">
-                            About <img src={assets.info_icon} alt="" />
-                        </p>
-                        <p className="text-sm text-gray-500 max-w-[700px] mt-1">
+                        <p className="text-sm text-gray-500 max-w-[700px] mt-4">
                             {docInfo.about}
                         </p>
                     </div>
                     <p className="text-gray-500 font-medium mt-4">
-                        Appointment fee: <span className="text-gray-600">{currencySymbol}{docInfo.fees}</span>
+                        Giá khám: <span className="text-gray-600">{docInfo.fees} {currencySymbol}</span>
                     </p>
                 </div>
             </div>
 
             {/* .........BOOKING SLOTS.......... */}
-            <div className="sm:ml-72 sm:pl-4 mt-4 font-medium text-gray-700">
-                <p>Booking slots</p>
+            <div className="sm:ml-72 sm:pl-4 mt-4 font-semibold text-gray-700">
+                <p>Lịch khám</p>
                 <div className="flex gap-3 items-center w-full overflow-x-scroll mt-4">
                     {
                         docSlots.length > 0 && docSlots.map((item, index) => (
@@ -140,7 +137,7 @@ const Appointment = () => {
                         </p>
                     ))}
                 </div>
-                <button className="bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6">Book an appointment</button>
+                <button className="bg-primary text-white text-sm font-light px-8 py-3 rounded-full my-6">Đặt lịch khám</button>
             </div>
 
             {/* ........realate doctors......... */}

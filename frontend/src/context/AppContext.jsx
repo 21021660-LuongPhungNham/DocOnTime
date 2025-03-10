@@ -2,14 +2,16 @@ import PropTypes from "prop-types";
 import { createContext } from "react";
 import { doctors } from "../assets/assets";
 
-export const AppContext = createContext({ doctors: [] });
+export const AppContext = createContext();
 
-const AppContextProvider = ({ children }) => {
-    const currencySymbol = '$'
+const AppContextProvider = (props) => {
+    const currencySymbol = 'VNĐ'
 
     const value = { doctors, currencySymbol };
 
-    return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+    return <AppContext.Provider value={value}>
+        {props.children}
+    </AppContext.Provider>;
 };
 
 AppContextProvider.propTypes = {
