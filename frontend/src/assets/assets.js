@@ -1,6 +1,5 @@
 import appointment_img from './appointment_img.png'
 import header_img from './header_img.png'
-import group_profiles from './group_profiles.png'
 import profile_pic from './profile_pic.png'
 import contact_image from './contact_image.png'
 import about_image from './about_image.png'
@@ -56,7 +55,6 @@ import Phụ_khoa from './Phụ_khoa.svg'
 export const assets = {
     appointment_img,
     header_img,
-    group_profiles,
     logo,
     chats_icon,
     verified_icon,

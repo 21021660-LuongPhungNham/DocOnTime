@@ -12,30 +12,32 @@ const Footer = () => {
                 </div>
 
                 {/* .......left......... */}
-                <div>
-                    <p className="text-xl font-medium mb-5">CÔNG TY</p>
-                    <ul className="flex flex-col gap-2 text-gray-600">
-                        <li>Trang chủ</li>
-                        <li>Giới thiệu</li>
-                        <li>Liên hệ</li>
-                        <li>Chính sách</li>
+                <div className="text-center md:text-left">
+                    <p className="text-lg font-semibold mb-3">CÔNG TY</p>
+                    <ul className="flex flex-col gap-2 text-gray-600 scroll-smooth">
+                        <li><a href="#home">Trang chủ</a></li>
+                        <li><a href="/about">Giới thiệu</a></li>
+                        <li><a href="/contact">Liên hệ</a></li>
+                        <li><a href="/policy">Chính sách</a></li>
                     </ul>
                 </div>
 
                 {/* .......left......... */}
-                <div>
-                    <p className="text-xl font-medium mb-5">LIÊN HỆ</p>
+                <div className="text-center md:text-left">
+                    <p className="text-lg font-semibold mb-3">LIÊN HỆ</p>
                     <ul className="flex flex-col gap-2 text-gray-600">
-                        <li>+84 012-3456-789</li>
-                        <li>123@gmail.com</li>
+                        <li>📞 +84 012-3456-789</li>
+                        <li>📧 123@gmail.com</li>
                     </ul>
                 </div>
             </div>
 
             {/* .... */}
-            <div>
+            <div className="mt-10">
                 <hr />
-                <p className="py-5 text-sm text-center">Copyright 2025@ - All Right Server</p>
+                <p className="py-5 text-sm text-center text-gray-500">
+                    © 2025 - All Rights Reserved
+                </p>
             </div>
         </div>
     )

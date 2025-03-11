@@ -81,7 +81,7 @@ const Appointment = () => {
         <div>
             {/* .....doc detail......... */}
             <div className="flex flex-col sm:flex-row gap-4">
-                <div className="bg-primary w-full sm:max-w-72 rounded-lg">
+                <div className="bg-[#59aecd] w-full sm:max-w-72 rounded-lg">
                     {docInfo ? (
                         <img src={docInfo.image} alt="Doctor" />
                     ) : (
@@ -120,7 +120,7 @@ const Appointment = () => {
                             item.length > 0 && (
                                 <div
                                     onClick={() => handleSlotChange(index)}
-                                    className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${slotIndex === index ? 'bg-primary text-white' : 'border border-gray-200'}`}
+                                    className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${slotIndex === index ? 'bg-[#59aecd] text-white' : 'border border-gray-200'}`}
                                     key={index}
                                 >
                                     <p>{item[0] && daysOfWeek[item[0].datetime.getDay()]}</p>
@@ -132,12 +132,12 @@ const Appointment = () => {
                 </div>
                 <div className="flex items-center gap-3 w-full overflow-x-scroll mt-4">
                     {docSlots.length > 0 && docSlots[slotIndex]?.map((item, index) => (
-                        <p onClick={() => setSlotTime(item.time)} className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${item.time === slotTime ? 'bg-primary text-white' : 'text-gray-400 border border-gray-300'}`} key={index}>
+                        <p onClick={() => setSlotTime(item.time)} className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${item.time === slotTime ? 'bg-[#59aecd] text-white' : 'text-gray-400 border border-gray-300'}`} key={index}>
                             {item.time.toLowerCase()}
                         </p>
                     ))}
                 </div>
-                <button className="bg-primary text-white text-sm font-light px-8 py-3 rounded-full my-6">Đặt lịch khám</button>
+                <button className="bg-[#59aecd] text-white text-sm font-light px-8 py-3 rounded-full my-6">Đặt lịch khám</button>
             </div>
 
             {/* ........realate doctors......... */}

@@ -8,7 +8,7 @@ const Doctors = () => {
   const { speciality } = useParams();
 
   const [filterDoc, setFilterDoc] = useState([])
-
+  const [showFilter, setShowFilter] = useState(false)
   const { doctors } = useContext(AppContext)
   const applyFilter = () => {
     if (speciality) {
@@ -27,6 +27,7 @@ const Doctors = () => {
     <div className="">
       <p className="text-gray-600">Duyệt qua các chuyên khoa của bác sĩ.</p>
       <div className="flex flex-col sm:flex-row items-start gap-5 mt-5">
+        <button className={`py-1 px-3 border rounded text-sm transition-all sm:hidden ${showFilter ? 'bg-primary text-white' : ''}`} onClick={() => setShowFilter(prev => !prev)}>Lọc</button>
         <div className="flex flex-col gap-4 text-sm text-gray-600">
           <p onClick={() => speciality === 'Tiêu hóa' ? navigate('/doctors') : navigate('/doctors/Tiêu hóa')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer whitespace-nowrap ${speciality === "Tiêu hóa" ? "bg-indigo-100 text-black" : ""}`}>Tiêu hóa</p>
           <p onClick={() => speciality === 'Truyền nhiễm' ? navigate('/doctors') : navigate('/doctors/Truyền nhiễm')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16  border border-gray-300 rounded transition-all cursor-pointer whitespace-nowrap ${speciality === "Truyền nhiễm" ? "bg-indigo-100 text-black" : ""}`}>Truyền nhiễm</p>
