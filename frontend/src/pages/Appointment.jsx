@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { assets } from "../assets/assets";
 import { AppContext } from "../context/AppContext";
-import RelatedDoctors from "../components/RelatedDoctors";
+import RecommendedDoctors from "../components/RecommendedDoctors";
 
 const Appointment = () => {
     const { docId } = useParams();
@@ -141,7 +141,7 @@ const Appointment = () => {
             </div>
 
             {/* ........realate doctors......... */}
-            <RelatedDoctors docId={docId} speciality={docInfo.speciality}></RelatedDoctors>
+            <RecommendedDoctors docId={docId} speciality={docInfo.speciality}></RecommendedDoctors>
 
         </div>
     );

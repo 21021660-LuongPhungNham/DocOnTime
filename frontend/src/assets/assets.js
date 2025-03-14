@@ -7,13 +7,13 @@ import logo from './logo.svg'
 import dropdown_icon from './dropdown_icon.svg'
 import menu_icon from './menu_icon.svg'
 import cross_icon from './cross_icon.png'
-import chats_icon from './chats_icon.svg'
+import chat_icon from './chat_icon.svg'
 import verified_icon from './verified_icon.svg'
 import arrow_icon from './arrow_icon.svg'
 import info_icon from './info_icon.svg'
 import upload_icon from './upload_icon.png'
-import stripe_logo from './stripe_logo.png'
-import razorpay_logo from './razorpay_logo.png'
+import new_acc from './new_acc.png'
+
 import doc1 from './doc1.png'
 import doc2 from './doc2.png'
 import doc3 from './doc3.png'
@@ -56,7 +56,7 @@ export const assets = {
     appointment_img,
     header_img,
     logo,
-    chats_icon,
+    chat_icon,
     verified_icon,
     info_icon,
     profile_pic,
@@ -67,8 +67,7 @@ export const assets = {
     cross_icon,
     dropdown_icon,
     upload_icon,
-    stripe_logo,
-    razorpay_logo
+    new_acc,
 }
 
 export const specialityData = [

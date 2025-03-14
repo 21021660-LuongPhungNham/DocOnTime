@@ -21,12 +21,10 @@ const MyAppointment = () => {
                             <p className="text-xs">{item.address.line}</p>
                             <p className="text-xs mt-1"><span className="text-sm text-neutral-800 font-medium">Ngày & giờ:</span> 25, July, 2024 | 8:30 PM</p>
                         </div>
-                        <div>
-
-                        </div>
+                        <div></div>
                         <div className="flex flex-col gap-2 justify-end">
-                            <button className="text-sm text-stone-500 border text-center sm:min-w-48 py-2 hover:bg-primary hover:text-white transition-all duration-300">Thanh toán trực tuyến</button>
-                            <button className="text-sm text-stone-500 border text-center sm:min-w-48 py-2 hover:bg-red-500 hover:text-white transition-all duration-300">Hủy lịch hẹn</button>
+                            <button className="text-sm text-stone-500 border rounded-full text-center sm:min-w-48 py-2 hover:bg-primary hover:text-white transition-all duration-300">Thanh toán trực tuyến</button>
+                            <button className="text-sm text-stone-500 border rounded-full text-center sm:min-w-48 py-2 hover:bg-red-500 hover:text-white transition-all duration-300">Hủy lịch hẹn</button>
                         </div>
                     </div>
 

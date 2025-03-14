@@ -15,13 +15,6 @@ const About = () => {
           <p>Với giao diện thân thiện và quy trình đặt lịch đơn giản, ứng dụng cho phép bạn lựa chọn bác sĩ và chuyên khoa phù hợp, đặt lịch hẹn chỉ trong vài bước. Bạn cũng có thể theo dõi lịch hẹn, nhận nhắc nhở và thậm chí tham gia tư vấn trực tuyến ngay tại nhà, tiết kiệm thời gian và nâng cao hiệu quả chăm sóc sức khỏe.</p>
           <b className="text-gray-800">Mục tiêu hướng đến</b>
           <p>Chúng tôi hình dung một tương lai nơi chăm sóc sức khỏe trở nên dễ dàng tiếp cận với mọi người, loại bỏ thời gian chờ đợi kéo dài và kết nối bệnh nhân với bác sĩ phù hợp mọi lúc, mọi nơi. Sứ mệnh của chúng tôi là tạo ra một nền tảng y tế thông minh, an toàn và hiệu quả, góp phần nâng cao sức khỏe cho mỗi cá nhân.
-
-
-
-
-
-
-
 </p>
         </div>
       </div>

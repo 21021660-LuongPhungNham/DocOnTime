@@ -7,11 +7,11 @@ const SpecialityMenu = () => {
     <p className='text-gray-600 text-lg text-center max-w-xl'>
         Dễ dàng duyệt danh sách bác sĩ uy tín, đặt lịch khám nhanh chóng và thuận tiện.
     </p>
-            <div className='flex sm:justify-center gap-6 pt-5 w-full overflow-scroll'>
+            <div className='flex sm:justify-center gap-6 pt-5 overflow-scroll'>
                 {specialityData.map((item, index) => (
                     <Link onClick={() => scrollTo(0, 0)} className='flex flex-col items-center  cursor-pointer  hover:translate-y-[-10px] transition-all duration-500'
                         key={index} to={`/doctors/${item.speciality}`}>
-                        <img className='w-16 sm:w-24 mb-2 rounded-full' src={item.image} alt="" />
+                        <img className='w-48 sm:w-28 mb-2 rounded-full' src={item.image} alt="" />
                         <p className=''>{item.speciality}</p>
                     </Link>
                 ))}
