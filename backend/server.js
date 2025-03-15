@@ -1,8 +1,8 @@
-import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import connectMongo from './config/mongodb.js';
+import express from 'express';
 import cloudinaryConnect from './config/cloudinary.js';
+import connectMongo from './config/mongodb.js';
 import adminRoutes from './routers/adminRoutes.js';
 
 dotenv.config();
@@ -19,6 +19,7 @@ cloudinaryConnect();
 
 app.use(express.json());
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 
 // 
 app.use('/api/admin', adminRoutes)

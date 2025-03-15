@@ -4,7 +4,7 @@ import upload from '../middlewares/uploadMiddleware.js';
 
 const adminRoutes = express.Router();
 
-// .....dinh tuyen duong them bac si
+// Định tuyến API thêm bác sĩ
 adminRoutes.post('/add_doctor', upload.single('image'), addDoctors);
 
 export default adminRoutes;
