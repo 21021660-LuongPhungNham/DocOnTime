@@ -24,15 +24,15 @@ const About = () => {
       </div>
 
       <div className="flex flex-col md:flex-row text-sm mt-6">
-        <div className="border px-10 md:px-16 py-8 sm:py-16 flex flex-col gap-5 text-[15px] hover:bg-primary hover:text-white transaction-all duration-300 text-gray-600 cursor-pointer">
+        <div className="border px-10 md:px-16 py-8 sm:py-16 flex flex-col gap-5 text-[15px] hover:bg-[#59aecd] hover:text-white transaction-all duration-300 text-gray-600 cursor-pointer">
           <b>Hiệu quả: </b>
           <p className="">Giảm thiểu thời gian chờ đợi, giúp bạn đặt lịch hẹn và nhận tư vấn y tế nhanh chóng, chính xác.</p>
         </div>
-        <div className="border px-10 md:px-16 py-8 sm:py-16 flex flex-col gap-5 text-[15px] hover:bg-primary hover:text-white transaction-all duration-300 text-gray-600 cursor-pointer">
+        <div className="border px-10 md:px-16 py-8 sm:py-16 flex flex-col gap-5 text-[15px] hover:bg-[#59aecd] hover:text-white transaction-all duration-300 text-gray-600 cursor-pointer">
           <b>Tiện lợi:</b>
           <p className="">Dễ dàng đặt lịch hẹn tại nhà, theo dõi lịch trình và nhận nhắc nhở để không bỏ lỡ bất kỳ cuộc hẹn nào.</p>
         </div>
-        <div className="border px-10 md:px-16 py-8 sm:py-16 flex flex-col gap-5 text-[15px] hover:bg-primary hover:text-white transaction-all duration-300 text-gray-600 cursor-pointer">
+        <div className="border px-10 md:px-16 py-8 sm:py-16 flex flex-col gap-5 text-[15px] hover:bg-[#59aecd] hover:text-white transaction-all duration-300 text-gray-600 cursor-pointer">
           <b>Cá nhân hóa:</b>
           <p className="">Nhận đề xuất bác sĩ phù hợp với nhu cầu của bạn, đảm bảo trải nghiệm chăm sóc sức khỏe tốt nhất.</p>
         </div>
