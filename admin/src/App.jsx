@@ -1,11 +1,15 @@
-import React from 'react'
+import React from "react";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Login from "./pages/Login";
 
 const App = () => {
   return (
-<div className="bg-green-500 text-white text-2xl p-4">
-  TailwindCSS chạy ngon rồi!
-</div>
-  )
+    <div>
+      <Login />
+      <ToastContainer />
+    </div>
+  );
 }
 
-export default App
+export default App;
