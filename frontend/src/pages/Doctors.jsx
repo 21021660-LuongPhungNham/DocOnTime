@@ -35,6 +35,8 @@ const Doctors = () => {
           <p onClick={() => speciality === 'Nhi khoa' ? navigate('/doctors') : navigate('/doctors/Nhi khoa')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer whitespace-nowrap ${speciality === "Nhi khoa" ? "bg-indigo-100 text-black" : ""}`}>Nhi khoa</p>
           <p onClick={() => speciality === 'Thần kinh' ? navigate('/doctors') : navigate('/doctors/Thần kinh')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer whitespace-nowrap ${speciality === "Thần kinh" ? "bg-indigo-100 text-black" : ""}`}>Thần kinh</p>
           <p onClick={() => speciality === 'Phụ khoa' ? navigate('/doctors') : navigate('/doctors/Phụ khoa')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer whitespace-nowrap ${speciality === "Phụ khoa" ? "bg-indigo-100 text-black" : ""}`}>Phụ khoa</p>
+          <p onClick={() => speciality === 'Phục hồi chức năng' ? navigate('/doctors') : navigate('/doctors/Phục hồi chức năng')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer whitespace-nowrap ${speciality === "Phục hồi chức năng" ? "bg-indigo-100 text-black" : ""}`}>Phục hồi chức năng</p>
+
         </div>
         <div className="w-full grid grid-cols-auto gap-4 gap-y-6">
           {
