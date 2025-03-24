@@ -130,5 +130,19 @@ const AdminLogin = (req, res) => {
     }
 };
 
-export { addDoctors, AdminLogin };
+
+// API de truy suat danh sach bac si tu MongoDB
+const getAllDoctors = async (req, res) => {
+    try {
+        const doctorsList = await doctorModels.find({}).select('-password');
+
+        res.json({ success: true, doctors: doctorsList });
+    }
+    catch (error) {
+        console.error("Lỗi khi lấy danh sách bác sĩ:", error.message);
+        res.json({ success: false, message: error.message });
+    }
+};
+
+export { addDoctors, AdminLogin, getAllDoctors };
 
