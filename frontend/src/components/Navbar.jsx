@@ -1,13 +1,19 @@
 
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { assets } from './../assets/assets';
+import { AppContext } from '../context/AppContext';
 const Navbar = () => {
 
     const navigate = useNavigate();
 
     const [showMenu, setShowMenu] = useState(false);
-    const [token, setToken] = useState(true);
+    const { token, setToken } = useContext(AppContext)
+
+    const handleLogout = () => {
+        localStorage.removeItem("token"); // Xóa token khỏi localStorage
+        setToken(null); // Cập nhật state về null để re-render giao diện
+    };
 
     return (
         <div className='flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400'>
@@ -22,10 +28,10 @@ const Navbar = () => {
                         <img className='w-7' onClick={() => setShowMenu(false)} src={assets.cross_icon} alt="" />
                     </div>
                     <ul className='flex flex-col items-center gap-4 mt-5 px-5 text-lg font-medium'>
-                        <NavLink  onClick={() => setShowMenu(false)} to='/'><p className="px-4 py-2 rounded inline-block">Trang chủ</p></NavLink>
-                        <NavLink  onClick={() => setShowMenu(false)} to='/doctors'><p className="px-4 py-2 rounded inline-block">Bác sĩ</p></NavLink>
-                        <NavLink  onClick={() => setShowMenu(false)} to='/contact'><p className="px-4 py-2 rounded inline-block">Liên hệ</p></NavLink>
-                        <NavLink  onClick={() => setShowMenu(false)} to='/about'><p className="px-4 py-2 rounded inline-block">Giới thiệu</p></NavLink>
+                        <NavLink onClick={() => setShowMenu(false)} to='/'><p className="px-4 py-2 rounded inline-block">Trang chủ</p></NavLink>
+                        <NavLink onClick={() => setShowMenu(false)} to='/doctors'><p className="px-4 py-2 rounded inline-block">Bác sĩ</p></NavLink>
+                        <NavLink onClick={() => setShowMenu(false)} to='/contact'><p className="px-4 py-2 rounded inline-block">Liên hệ</p></NavLink>
+                        <NavLink onClick={() => setShowMenu(false)} to='/about'><p className="px-4 py-2 rounded inline-block">Giới thiệu</p></NavLink>
                     </ul>
                 </div>
             </div>
@@ -62,7 +68,7 @@ const Navbar = () => {
                                     <p onClick={() => navigate('/my-appointments')} className="hover:text-black cursor-pointer">
                                         Lịch hẹn
                                     </p>
-                                    <p onClick={() => setToken(false)} className="hover:text-black cursor-pointer">
+                                    <p onClick={handleLogout} className="hover:text-black cursor-pointer">
                                         Đăng xuất
                                     </p>
                                 </div>

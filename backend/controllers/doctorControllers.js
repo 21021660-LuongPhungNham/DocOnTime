@@ -28,4 +28,17 @@ const updateDoctorStatus = async (req, res) => {
     }
 };
 
-export { updateDoctorStatus };
+
+const listDoctors = async (req, res) => {
+    try {
+        const doctors = await doctorModels.find({}).select(['-password', '-email']);
+        console.log("Doctors found:", doctors); // ✅ Kiểm tra dữ liệu từ DB
+        res.json({ success: true, doctors });
+    } catch (err) {
+        console.error("Error fetching doctors:", err);
+        res.json({ success: false, message: err.message });
+    }
+};
+
+
+export { updateDoctorStatus, listDoctors };

@@ -4,6 +4,8 @@ import express from 'express';
 import cloudinaryConnect from './config/cloudinary.js';
 import connectMongo from './config/mongodb.js';
 import adminRoutes from './routers/adminRoutes.js';
+import doctorRoutes from './routers/doctorRoutes.js';
+import userRoutes from './routers/userRoutes.js';
 
 dotenv.config();
 
@@ -23,6 +25,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // 
 app.use('/api/admin', adminRoutes)
+app.use('/api/doctor', doctorRoutes)
+app.use('/api/user', userRoutes)
 
 app.get('/', (req, res) => {
     res.send('working');
