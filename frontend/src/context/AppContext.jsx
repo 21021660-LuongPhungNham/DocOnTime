@@ -41,7 +41,7 @@ const AppContextProvider = (props) => {
 
     console.log("Doctors state:", doctors);
 
-    // ✅ Lấy thông tin user
+    // lau thong tin user
     const fetchUserProfile = async () => {
         try {
             const { data } = await axios.get(`${UrlBE}/api/user/get_profile`, {
@@ -50,6 +50,7 @@ const AppContextProvider = (props) => {
 
             if (data.success) {
                 setUserData(data.user);
+                localStorage.setItem("userData", JSON.stringify(data.user));
             } else {
                 toast.error(data.message);
                 setUserData(null);
@@ -60,6 +61,7 @@ const AppContextProvider = (props) => {
             if (error.response?.status === 401) {
                 toast.error("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại!");
                 localStorage.removeItem("token");
+                localStorage.removeItem("userData");
                 setToken("");
                 setUserData(null);
             } else {

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useContext, useState } from "react";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // ✅ Import CSS để hiển thị đẹp hơn
 import { AppContext } from "../context/AppContext";
 import { assets } from './../assets/assets';
 
@@ -8,7 +9,7 @@ const MyProfile = () => {
   const { userData, setUserData, token, UrlBE, fetchUserProfile } = useContext(AppContext);
 
   const [isEdit, setIsEdit] = useState(false);
-  const [image, setImage] = useState(false);
+  const [image, setImage] = useState(null);
 
   const userProfileUpdate = async () => {
     try {
@@ -26,14 +27,15 @@ const MyProfile = () => {
       const { data } = await axios.post(`${UrlBE}/api/user/update_profile`, formData, {
         headers: { token }
       });
+
       console.log("Dữ liệu cập nhật:", Object.fromEntries(formData));
 
       if (data.success) {
         toast.success(data.message);
-
         await fetchUserProfile();
+        setUserData(data.user);
         setIsEdit(false);
-        setImage(false);
+        setImage(null);
       }
       else {
         toast.error(data.message);

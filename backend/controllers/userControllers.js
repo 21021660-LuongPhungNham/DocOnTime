@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import validator from "validator";
-import userDoctorModels from "../models/userDoctorModels.js";  // Chỉ giữ 1 import đúng
-
+import userDoctorModels from "../models/userDoctorModels.js";
+import { v2 as cloudinary } from 'cloudinary';
 const signUpUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -85,4 +85,83 @@ const userLogin = async (req, res) => {
     }
 };
 
-export { signUpUser, userLogin };
+// api lay thong tin user
+
+const getUserProfile = async (req, res) => {
+    try {
+        const userId = req.userId;
+
+        if (!userId) {
+            return res.json({ success: false, message: "Thiếu userId" });
+        }
+
+        const user = await userDoctorModels.findById(userId).select('-password');
+
+        if (!user) {
+            return res.json({ success: false, message: "Không tìm thấy người dùng" });
+        }
+
+        res.json({ success: true, user });
+    } catch (error) {
+        console.error("Lỗi khi tải user profile:", error);
+        res.json({ success: false, message: "Lỗi server" });
+    }
+};
+
+const userProfileUpdate = async (req, res) => {
+    try {
+        console.log("Dữ liệu nhận từ request:", req.body);
+        console.log("File ảnh nhận được:", req.file);
+
+        const { name, phone, address, birth, gender, email } = req.body;
+        const userId = req.userId;
+        const imgFile = req.file;
+
+        if (!userId) {
+            return res.json({ success: false, message: "Thiếu userId" });
+        }
+
+        if (!name || !phone || !birth || !gender || !email) {
+            return res.json({ success: false, message: "Thiếu dữ liệu bắt buộc" });
+        }
+
+        const parsedAddress = (() => {
+            try {
+                return typeof address === "string" ? JSON.parse(address) : address;
+            } catch (err) {
+                console.error("Lỗi parse address:", err);
+                res.json({ success: false, message: "Định dạng địa chỉ không hợp lệ" });
+                return null;
+            }
+        })();
+
+        if (!parsedAddress) return;
+
+        const imageUrl = imgFile
+            ? (await cloudinary.uploader.upload(imgFile.path, { resource_type: 'image' })).secure_url
+            : undefined;
+
+        console.log("UserId để cập nhật:", userId);
+        const updateData = { name, phone, address: parsedAddress, birth, gender, email };
+        if (imageUrl) updateData.image = imageUrl;
+
+        const updatedUser = await userDoctorModels.findByIdAndUpdate(
+            userId,
+            updateData,
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.json({ success: false, message: "Không tìm thấy người dùng" });
+        }
+
+        res.json({ success: true, message: "Cập nhật thành công", user: updatedUser });
+
+    } catch (error) {
+        console.error("Lỗi cập nhật hồ sơ:", error);
+        return res.json({ success: false, message: "Lỗi server" });
+    }
+};
+
+export { getUserProfile, signUpUser, userLogin, userProfileUpdate };
+
