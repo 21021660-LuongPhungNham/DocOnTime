@@ -92,7 +92,7 @@ export const specialityData = [
         image: Phụ_khoa
     },
     {
-        speciality: 'Phuc_hoi_chuc_nang',
+        speciality: 'Phục hồi chức năng',
         image: Phuc_hoi_chuc_nang
     },
 ]

@@ -1,8 +1,10 @@
 import bcrypt from "bcryptjs";
+import { v2 as cloudinary } from 'cloudinary';
 import jwt from "jsonwebtoken";
 import validator from "validator";
-import userDoctorModels from "../models/userDoctorModels.js";
-import { v2 as cloudinary } from 'cloudinary';
+import appointmentModels from "../models/appointmentModels.js";
+import doctorModels from "../models/doctorModels.js";
+import userModels from "../models/userModels.js";
 const signUpUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -19,7 +21,7 @@ const signUpUser = async (req, res) => {
             return res.json({ success: false, message: "Mật khẩu phải có ít nhất 8 ký tự" });
         }
 
-        const existingUser = await userDoctorModels.findOne({ email });
+        const existingUser = await userModels.findOne({ email });
         if (existingUser) {
             return res.json({ success: false, message: "Email đã tồn tại" });
         }
@@ -28,7 +30,7 @@ const signUpUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // tao nguoi dung ms
-        const newUser = new userDoctorModels({
+        const newUser = new userModels({
             name,
             email,
             password: hashedPassword,
@@ -47,7 +49,6 @@ const signUpUser = async (req, res) => {
 };
 
 // api cho nguoi dung
-
 const userLogin = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -56,7 +57,7 @@ const userLogin = async (req, res) => {
             return res.json({ success: false, message: "Vui lòng nhập email và mật khẩu" });
         }
 
-        const user = await userDoctorModels.findOne({ email });
+        const user = await userModels.findOne({ email });
         if (!user) {
             return res.json({ success: false, message: "Người dùng không tồn tại" });
         }
@@ -67,7 +68,7 @@ const userLogin = async (req, res) => {
         }
 
         // Tao token
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
 
         return res.json({
             success: true,
@@ -86,16 +87,16 @@ const userLogin = async (req, res) => {
 };
 
 // api lay thong tin user
-
 const getUserProfile = async (req, res) => {
     try {
         const userId = req.userId;
+        console.log("Kiểm tra userId:", userId);
 
         if (!userId) {
             return res.json({ success: false, message: "Thiếu userId" });
         }
 
-        const user = await userDoctorModels.findById(userId).select('-password');
+        const user = await userModels.findById(userId).select('-password');
 
         if (!user) {
             return res.json({ success: false, message: "Không tìm thấy người dùng" });
@@ -145,7 +146,7 @@ const userProfileUpdate = async (req, res) => {
         const updateData = { name, phone, address: parsedAddress, birth, gender, email };
         if (imageUrl) updateData.image = imageUrl;
 
-        const updatedUser = await userDoctorModels.findByIdAndUpdate(
+        const updatedUser = await userModels.findByIdAndUpdate(
             userId,
             updateData,
             { new: true }
@@ -163,5 +164,62 @@ const userProfileUpdate = async (req, res) => {
     }
 };
 
-export { getUserProfile, signUpUser, userLogin, userProfileUpdate };
+
+// api dat lich kham
+const scheduleAppointment = async (req, res) => {
+    try {
+        const { userId, docId, slotDate, slotTime } = req.body;
+
+        // lay thong tin bac si theo  id
+        const doctorInfo = await doctorModels.findById(docId).select('-password');
+        if (!doctorInfo || !doctorInfo.available) {
+            return res.json({ success: false, message: 'Bác sĩ không khả dụng' });
+        }
+
+        // Kiem tra lich hen co bi trung khong
+        let bookedSlots = doctorInfo.bookingSlot || {};
+        if (bookedSlots[slotDate]?.includes(slotTime)) {
+            return res.json({ success: false, message: 'Khung giờ đã được đặt' });
+        }
+
+        // cap nhat danh sach da dat
+        bookedSlots[slotDate] = bookedSlots[slotDate] || [];
+        bookedSlots[slotDate].push(slotTime);
+
+        // Lay info benh nhan theo id
+        const patientInfo = await userModels.findById(userId).select('-password');
+        console.log("Kiểm tra userId:", userId);
+        console.log("Kết quả truy vấn user:", patientInfo);
+        if (!patientInfo) {
+            return res.json({ success: false, message: 'Không tìm thấy thông tin bệnh nhân' });
+        }
+
+        delete doctorInfo.bookingSlot;
+
+        const newAppointmentData = {
+            userId,
+            docId,
+            userData: patientInfo,
+            docData: doctorInfo,
+            amount: doctorInfo.fees,
+            slotDate,
+            slotTime,
+            date: Date.now(),
+        };
+
+        // Luu lich hen vao database
+        const newAppointment = new appointmentModels(newAppointmentData);
+        await newAppointment.save();
+
+        // cap nhat danh sach khung gio da dat cua bac si
+        await doctorModels.findByIdAndUpdate(docId, { $set: { bookingSlot: bookedSlots } });
+
+        res.json({ success: true, message: "Đặt lịch hẹn thành công" });
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: "Đã xảy ra lỗi trong quá trình đặt lịch" });
+    }
+};
+
+export { getUserProfile, scheduleAppointment, signUpUser, userLogin, userProfileUpdate };
 

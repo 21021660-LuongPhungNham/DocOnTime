@@ -11,11 +11,11 @@ const doctorSchema = new mongoose.Schema({
     about: { type: String, required: true },
     fees: { type: Number, required: true },
     address: { type: Object, required: true },
-    date: { type: Number, required: true },
+    date: { type: Date, default: Date.now },
     available: { type: Boolean, default: true },
     bookingSlot: { type: Object, default: {} },
 }, { minimize: false });
 
-const doctorModel = mongoose.models.doctor || mongoose.model("doctor", doctorSchema)
+const doctorModels = mongoose.models.doctor || mongoose.model("doctor", doctorSchema)
 
-export default doctorModel;
+export default doctorModels;

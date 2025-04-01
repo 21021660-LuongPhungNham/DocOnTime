@@ -8,23 +8,23 @@ export const AppContext = createContext();
 const AppContextProvider = (props) => {
     const currencySymbol = 'VNĐ';
 
-    // Lấy token từ localStorage
+    // Lay token tu localStorage
     const [token, setToken] = useState(localStorage.getItem('token') || null);
     const [userData, setUserData] = useState(false);
     const [doctors, setDoctors] = useState([]);
 
     const UrlBE = import.meta.env.VITE_BE_URL;
 
-    // ✅ Lấy danh sách bác sĩ
+    // lay danh sach bac si
     const getDoctorsData = async () => {
         try {
             const { data } = await axios.get(`${UrlBE}/api/doctor/list`);
-            console.log("API Response:", data);  // ✅ Kiểm tra dữ liệu API
-            console.log("Doctors Data:", data.doctors);  // ✅ Log danh sách bác sĩ
+            console.log("API Response:", data);
+            console.log("Doctors Data:", data.doctors);
 
             if (data.success) {
                 setDoctors(data.doctors);
-                console.log("Updated Doctors State:", data.doctors);  // ✅ Kiểm tra xem state có cập nhật không
+                console.log("Updated Doctors State:", data.doctors);
             } else {
                 toast.error(data.message);
             }
@@ -37,11 +37,11 @@ const AppContextProvider = (props) => {
 
     useEffect(() => {
         getDoctorsData();
-    }, [setDoctors]);  // ✅ Thêm `setDoctors` để chắc chắn nó re-render
+    }, [setDoctors]);
 
     console.log("Doctors state:", doctors);
 
-    // lau thong tin user
+    // lay thong tin user
     const fetchUserProfile = async () => {
         try {
             const { data } = await axios.get(`${UrlBE}/api/user/get_profile`, {
@@ -79,7 +79,7 @@ const AppContextProvider = (props) => {
     }, [token]);
 
     const value = {
-        doctors, currencySymbol, UrlBE, token,
+        doctors, currencySymbol, UrlBE, token,getDoctorsData,
         setToken, userData, setUserData, fetchUserProfile
     };
 
