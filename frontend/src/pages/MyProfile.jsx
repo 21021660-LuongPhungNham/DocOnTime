@@ -28,7 +28,7 @@ const MyProfile = () => {
         headers: { token }
       });
 
-      console.log("Dữ liệu cập nhật:", Object.fromEntries(formData));
+      //console.log("Dữ liệu cập nhật:", Object.fromEntries(formData));
 
       if (data.success) {
         toast.success(data.message);
@@ -54,7 +54,7 @@ const MyProfile = () => {
         <label htmlFor="image">
           <div className="inline-block cursor-pointer relative">
             {/* hien thi anh xem truoc hoac anh hien tai */}
-            <img className="w-36 rounded opacity-75" src={image ? URL.createObjectURL(image) : userData.image} alt="" />
+            <img className="w-36 rounded opacity-75" src={image ? URL.createObjectURL(image) : userData.image || assets.new_acc} alt="" />
             <img className="w-10 absolute bottom-12 right-12" src={image ? '' : assets.upload_icon} alt="" />
           </div>
           <input onChange={(e) => setImage(e.target.files[0])} type="file" id="image" className="hidden" />

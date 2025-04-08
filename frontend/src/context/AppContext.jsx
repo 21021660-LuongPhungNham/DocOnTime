@@ -37,7 +37,7 @@ const AppContextProvider = (props) => {
 
     useEffect(() => {
         getDoctorsData();
-    }, [setDoctors]);
+    }, []);
 
     console.log("Doctors state:", doctors);
 

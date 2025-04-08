@@ -20,8 +20,13 @@ const Appointment = () => {
 
     const fetchDocInfo = () => {
         const docInfo = doctors.find(doc => doc._id === docId);
+        if (!docInfo) {
+            console.error("Không tìm thấy thông tin bác sĩ.");
+            return;
+        }
         setDocInfo(docInfo);
     };
+
 
     // xu ly ngay gio dat lich kham
     const getAvailableSlots = async () => {
@@ -29,32 +34,49 @@ const Appointment = () => {
 
         let today = new Date();
         for (let i = 0; i < 7; i++) {
-            let currentDate = new Date(today);
-            currentDate.setDate(today.getDate() + i);
+            let currDate = new Date(today);
+            currDate.setDate(today.getDate() + i);
 
             let endTime = new Date();
             endTime.setDate(today.getDate() + i)
-            endTime.setHours(21, 0, 0, 0);
+            endTime.setHours(23, 0, 0, 0);
 
-            if (today.getDate() === currentDate.getDate()) {
-                currentDate.setHours(currentDate.getHours() > 6 ? currentDate.getHours() + 1 : 6);
-                currentDate.setMinutes(currentDate.getMinutes() > 30 ? 30 : 0);
+            if (today.getDate() === currDate.getDate()) {
+                currDate.setHours(currDate.getHours() > 6 ? currDate.getHours() + 1 : 7);
+                currDate.setMinutes(currDate.getMinutes() > 30 ? 30 : 0);
             } else {
-                currentDate.setHours(10);
-                currentDate.setMinutes(0);
+                currDate.setHours(7);
+                currDate.setMinutes(0);
             }
 
             let timeSlots = [];
 
-            while (currentDate < endTime) {
-                let formattedTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                //
-                timeSlots.push({
-                    datetime: new Date(currentDate),
-                    time: formattedTime
-                });
-                //
-                currentDate.setMinutes(currentDate.getMinutes() + 30);
+            while (currDate < endTime) {
+
+                let formattedTime = currDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                // an di ngay da duoc dat
+                let day = currDate.getDate();
+                let month = currDate.getMonth() + 1;
+                let year = currDate.getFullYear();
+
+                const slotDate = day + "/" + (month) + "/" + (year);
+                const slotTime = formattedTime
+                const isSlotAvailable = !(docInfo.bookingSlot[slotDate]?.includes(slotTime));
+                if (!docInfo) {
+                    console.error("Lỗi: docInfo bị null hoặc undefined");
+                    return;
+                }
+
+                if (isSlotAvailable) {
+                    //
+                    timeSlots.push({
+                        datetime: new Date(currDate),
+                        time: formattedTime
+                    });
+                }
+                // tang len 30p
+                currDate.setMinutes(currDate.getMinutes() + 30);
             }
 
             setDocSlots(prev => ([...prev, timeSlots]))
@@ -104,11 +126,16 @@ const Appointment = () => {
     };
 
     useEffect(() => {
-        fetchDocInfo();
-    }, [doctors, docId]);
+        if (doctors.length > 0) {
+            fetchDocInfo();
+        }
+    }, [doctors]);
+
 
     useEffect(() => {
-        getAvailableSlots();
+        if (docInfo) {
+            getAvailableSlots();
+        }
     }, [docInfo]);
 
     useEffect(() => {
