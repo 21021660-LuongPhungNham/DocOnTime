@@ -221,5 +221,20 @@ const scheduleAppointment = async (req, res) => {
     }
 };
 
-export { getUserProfile, scheduleAppointment, signUpUser, userLogin, userProfileUpdate };
+// api lay lich hen cua benh nhan
+const fetchUserAppointments = async (req, res) => {
+    try {
+        // Lay userId tu body
+        const userId = req.userId;
+        const appointments = await appointmentModels.find({ userId })
+        //
+        res.json({ success: true, appointments })
+
+    } catch (err) {
+        console.log(err)
+        res.json({ success: false, message: err.message })
+    }
+}
+
+export { getUserProfile, scheduleAppointment, signUpUser, userLogin, userProfileUpdate, fetchUserAppointments };
 
