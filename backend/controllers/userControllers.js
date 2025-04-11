@@ -236,5 +236,41 @@ const fetchUserAppointments = async (req, res) => {
     }
 }
 
-export { getUserProfile, scheduleAppointment, signUpUser, userLogin, userProfileUpdate, fetchUserAppointments };
+// api huy lich hen
+const cancelAppointment = async (req, res) => {
+    try {
+
+        const { appointmentId } = req.body
+        const userId = req.userId
+
+        // Tim lich hen theo ID
+        const appointment = await appointmentModels.findById(appointmentId);
+        if (!appointment) {
+            return res.json({ success: false, message: 'Không tìm thấy lịch hẹn' });
+        }
+
+        // kiem tra quyen huy lich
+        if (appointment.userId.toString() !== userId) {
+            return res.json({ success: false, message: 'Không được phép' });
+        }
+
+        await appointmentModels.findByIdAndUpdate(appointmentId, { cancel: true })
+
+        // giai phong khung gio da dat cua bac si
+        const { docId, slotDate, slotTime } = appointment;
+        const doctor = await doctorModels.findById(docId);
+        if (doctor && doctor.bookingSlot[slotDate]) {
+            doctor.bookingSlot[slotDate] = doctor.bookingSlot[slotDate].filter(time => time !== slotTime);
+            await doctorModels.findByIdAndUpdate(docId, { bookingSlot: doctor.bookingSlot });
+        }
+
+        res.json({ success: true, message: 'Hủy lịch hẹn thành công' });
+
+    } catch (error) {
+        console.error("Lỗi huỷ lịch hẹn:", error);
+        res.json({ success: false, message: 'Đã xảy ra lỗi, vui lòng thử lại sau.' });
+    }
+};
+
+export { getUserProfile, scheduleAppointment, signUpUser, userLogin, userProfileUpdate, fetchUserAppointments, cancelAppointment };
 

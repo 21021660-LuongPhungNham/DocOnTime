@@ -8,13 +8,14 @@ const MyAppointment = () => {
     const { UrlBE, token } = useContext(AppContext);
 
     const [listAppointment, setListAppointment] = useState([]);
+
+    //   lay danh sach lich hen benh nhan
     const fetchUserAppointment = async () => {
         try {
 
             const { data } = await axios.get(`${UrlBE}/api/user/list_appointment`, { headers: { token } })
             console.log("Response from list_appointment:", data);
             console.log("Token:", token);
-
 
             if (data.success) {
                 setListAppointment(data.appointments.reverse());
@@ -32,12 +33,31 @@ const MyAppointment = () => {
         }
     }, [token])
 
+    // huy lich hen sau khi da dat
+    const cancelAppointment = async (appointmentId) => {
+        try {
+
+            const { data } = await axios.post(`${UrlBE}/api/user/cancel_appointment`, { appointmentId }, { headers: { token } });
+
+            if (data.success) {
+                toast.success(data.message)
+                fetchUserAppointment()
+            } else {
+                toast.error(data.message)
+            }
+
+        } catch (err) {
+            console.error("Lỗi khi huỷ lịch hẹn:", err);
+            toast.error("Đã xảy ra lỗi trong quá trình huỷ lịch. Vui lòng thử lại sau.");
+        }
+    };
+
     return (
         <div>
             <p className="pb-3 mt-12 font-semibold border-b">Lịch hẹn</p>
             <div>
                 {listAppointment.map((item, index) => (
-                    <div className="grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-2 border-b" key={index}>
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 py-2 border-b" key={index}>
                         <div>
                             <img className="w-32 bg-indigo-50" src={item.docData.image} alt="" />
                         </div>
@@ -52,12 +72,28 @@ const MyAppointment = () => {
                             </p>
                         </div>
                         <div></div>
-                        <div className="flex flex-col gap-2 justify-end">
-                            <button className="text-sm text-stone-500 border rounded-full text-center sm:min-w-48 py-2 hover:bg-primary hover:text-white transition-all duration-300">Thanh toán trực tuyến</button>
-                            <button className="text-sm text-stone-500 border rounded-full text-center sm:min-w-48 py-2 hover:bg-red-500 hover:text-white transition-all duration-300">Hủy lịch hẹn</button>
-                        </div>
-                    </div>
 
+                        {/* ....xu ly huy lich hen.... */}
+                        <div className="flex flex-col gap-2 justify-end">
+                            {!item.cancel && (
+                                <button className="text-sm text-stone-500 border rounded-full text-center sm:min-w-48 py-2 hover:bg-primary hover:text-white transition-all duration-300">Thanh toán trực tuyến</button>
+                            )}
+
+                            {!item.cancel && (
+                                <button className="text-sm text-stone-500 border rounded-full text-center sm:min-w-48 py-2 hover:bg-red-500 hover:text-white transition-all duration-300"
+                                    onClick={() => { if (window.confirm("Bạn có chắc chắn muốn hủy lịch hẹn này không?")) { cancelAppointment(item._id); } }}>
+                                    Hủy lịch hẹn
+                                </button>
+                            )}
+
+                            {item.cancel && (
+                                <div className="border border-red-500 rounded-full py-2 px-4 text-red-500 text-sm sm:min-w-48 text-center">
+                                    Lịch hẹn đã bị hủy
+                                </div>
+                            )}
+                        </div>
+
+                    </div>
                 ))}
             </div>
         </div>
