@@ -126,10 +126,10 @@ const Appointment = () => {
     };
 
     useEffect(() => {
-        if (doctors.length > 0) {
+        if (doctors.length > 0 && docId) {
             fetchDocInfo();
         }
-    }, [doctors]);
+    }, [doctors, docId]);
 
 
     useEffect(() => {
@@ -149,11 +149,7 @@ const Appointment = () => {
             {/* .....doc detail......... */}
             <div className="flex flex-col sm:flex-row gap-4">
                 <div className="bg-[#59aecd] w-full sm:max-w-72 rounded-lg">
-                    {docInfo ? (
                         <img src={docInfo.image} alt="Doctor" />
-                    ) : (
-                        <p>null</p>
-                    )}
                 </div>
                 <div className="flex-1 border border-gray-400 rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0">
                     {/* ........doc Info............ */}
@@ -208,7 +204,7 @@ const Appointment = () => {
                 <button onClick={scheduleAppointment} className="bg-[#59aecd] text-white text-sm font-light px-8 py-3 rounded-full my-6">Đặt lịch khám</button>
             </div>
 
-            {/* ........realate doctors......... */}
+            {/* ........bac si noi bat......... */}
             <RecommendedDoctors docId={docId} speciality={docInfo.speciality}></RecommendedDoctors>
 
         </div>

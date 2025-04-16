@@ -1,5 +1,5 @@
 import express from 'express';
-import { cancelAppointment, fetchUserAppointments, getUserProfile, scheduleAppointment, signUpUser, userLogin, userProfileUpdate } from '../controllers/userControllers.js';
+import { cancelAppointment, fetchUserAppointments, getUserProfile, scheduleAppointment, signUpUser, userLogin, UserPayment, userProfileUpdate } from '../controllers/userControllers.js';
 import authUser from '../middlewares/authUser.js';
 import upload from './../middlewares/uploadMiddleware.js';
 
@@ -17,5 +17,6 @@ userRoutes.post('/book_appointment', authUser, scheduleAppointment);
 userRoutes.get('/list_appointment', authUser, fetchUserAppointments);
 
 userRoutes.post('/cancel_appointment', authUser, cancelAppointment);
+userRoutes.post('/payment_payos', authUser, UserPayment);
 
 export default userRoutes;

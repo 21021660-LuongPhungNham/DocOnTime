@@ -52,6 +52,23 @@ const MyAppointment = () => {
         }
     };
 
+    // xu ly payment
+    const handlePayment = async (appointmentId) => {
+        try {
+            const { data } = await axios.post(`${UrlBE}/api/user/payment_payos`, { appointmentId }, {
+                headers: { token }
+            });
+
+            if (data.success) {
+                window.location.href = data.paymentUrl;
+            } else {
+                toast.error(data.message || "Không thể tạo link thanh toán");
+            }
+        } catch (err) {
+            toast.error("Lỗi thanh toán: " + err.message);
+        }
+    };
+
     return (
         <div>
             <p className="pb-3 mt-12 font-semibold border-b">Lịch hẹn</p>
@@ -76,7 +93,7 @@ const MyAppointment = () => {
                         {/* ....xu ly huy lich hen.... */}
                         <div className="flex flex-col gap-2 justify-end">
                             {!item.cancel && (
-                                <button className="text-sm text-stone-500 border rounded-full text-center sm:min-w-48 py-2 hover:bg-primary hover:text-white transition-all duration-300">Thanh toán trực tuyến</button>
+                                <button onClick={() => handlePayment(item._id)} className="text-sm text-stone-500 border rounded-full text-center sm:min-w-48 py-2 hover:bg-primary hover:text-white transition-all duration-300">Thanh toán trực tuyến</button>
                             )}
 
                             {!item.cancel && (

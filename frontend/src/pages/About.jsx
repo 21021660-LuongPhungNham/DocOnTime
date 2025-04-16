@@ -20,7 +20,7 @@ const About = () => {
       </div>
 
       <div className="text-xl mt-4">
-        <p>TẠI SAO <span className="text-gray-700 font-semibold">NÊN CHỌN CHÚNG TÔI</span></p>
+        <p>TẠI SAO <span className="text-gray-700 font-semibold">NÊN CHỌN CHÚNG TÔI?</span></p>
       </div>
 
       <div className="flex flex-col md:flex-row text-sm mt-6">

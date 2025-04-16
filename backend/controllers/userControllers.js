@@ -5,6 +5,9 @@ import validator from "validator";
 import appointmentModels from "../models/appointmentModels.js";
 import doctorModels from "../models/doctorModels.js";
 import userModels from "../models/userModels.js";
+import PayOS from '@payos/node';
+import dotenv from 'dotenv';
+dotenv.config();
 const signUpUser = async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -272,5 +275,114 @@ const cancelAppointment = async (req, res) => {
     }
 };
 
-export { getUserProfile, scheduleAppointment, signUpUser, userLogin, userProfileUpdate, fetchUserAppointments, cancelAppointment };
+//  payos
+const payos = new PayOS(
+    process.env.PAYOS_CLIENT_ID,
+    process.env.PAYOS_API_KEY,
+    process.env.PAYOS_CHECKSUM_KEY
+);
+const UserPayment = async (req, res) => {
+    try {
+        const { appointmentId } = req.body;
+        const appointment = await appointmentModels.findById(appointmentId);
+
+        if (!appointment) {
+            return res.json({ success: false, message: "Không tìm thấy lịch hẹn" });
+        }
+
+        if (appointment.cancel) {
+            return res.json({ success: false, message: "Lịch hẹn đã bị hủy" });
+        }
+
+        if (!appointment.amount || typeof appointment.amount !== 'number' || appointment.amount <= 0) {
+            return res.json({ success: false, message: "Số tiền không hợp lệ" });
+        }
+
+        // xu ly ramdom code
+        const ramdomOrderCode = () => Date.now() + Math.floor(Math.random() * 10000);
+
+        const payOption = {
+            amount: appointment.amount,
+            receipt: appointmentId,
+            orderCode: ramdomOrderCode(),
+            description: `${appointment?.userData?.name} Thanh toán lịch hẹn`.slice(0, 25),
+            returnUrl: `http://localhost:5173/payment_success?appointmentId=${appointmentId}`,
+            cancelUrl: `http://localhost:5173/payment_cancel?appointmentId=${appointmentId}`,
+            buyerName: appointment?.userData?.name || 'Khách hàng',
+            buyerEmail: appointment?.userData?.email || 'khachhang@example.com',
+            buyerPhone: appointment?.userData?.phone || '0123456789',
+            metadata: {
+                appointmentId: appointmentId
+            },
+            items: [
+                {
+                    name: 'Phí đặt lịch khám',
+                    quantity: 1,
+                    price: appointment.amount
+                }
+            ]
+        };
+
+
+        console.log("Gửi yêu cầu tạo link thanh toán với tham số:", payOption);
+
+        // tao link thanh toan
+        const paymentLink = await payos.createPaymentLink(payOption);
+        console.log("Kết quả trả về từ PayOS:", paymentLink);
+
+        if (!paymentLink || !paymentLink.checkoutUrl) {
+            console.log("Không thể tạo link thanh toán", paymentLink);
+            return res.json({ success: false, message: "Không thể tạo link thanh toán" });
+        }
+
+        appointment.orderCode = paymentLink.orderCode;
+        await appointment.save();
+
+        return res.json({
+            success: true,
+            paymentUrl: paymentLink.checkoutUrl,
+            message: "Tạo link thanh toán thành công"
+        });
+
+    } catch (err) {
+        return res.json({ success: false, message: "Lỗi server khi tạo link thanh toán" });
+    }
+};
+
+//kiem tra trang thai don thanh toan
+const CheckPaymentStatus = async (req, res) => {
+    try {
+        const { appointmentId } = req.body;
+        const appointment = await appointmentModels.findById(appointmentId);
+
+        if (!appointment) {
+            return res.json({ success: false, message: "Không tìm thấy lịch hẹn" });
+        }
+
+        const { data } = await axios.get(`https://api-merchant.payos.vn/v2/payment-requests/${appointment.orderCode}`, {
+            headers: {
+                'x-client-id': process.env.PAYOS_CLIENT_ID,
+                'x-api-key': process.env.PAYOS_API_KEY
+            }
+        });
+
+        if (data.status === 'PAID') {
+            appointment.payment = true;
+            try {
+                await appointment.save();
+                console.log('Trạng thái thanh toán đã được cập nhật thành công');
+            } catch (err) {
+                console.error('Lỗi khi lưu trạng thái thanh toán:', err);
+            }
+        }
+
+        return res.json({ success: true, status: data.status });
+
+    } catch (err) {
+        return res.json({ success: false, message: "Lỗi kiểm tra thanh toán", error: err.message });
+    }
+};
+
+
+export { getUserProfile, scheduleAppointment, signUpUser, userLogin, userProfileUpdate, fetchUserAppointments, cancelAppointment, UserPayment, CheckPaymentStatus };
 
