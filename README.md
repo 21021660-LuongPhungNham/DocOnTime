@@ -50,7 +50,7 @@ PAYOS_API_KEY=your_payos_api_key
 PAYOS_CHECKSUM_KEY=your_payos_checksum_key
 CURRENCY=VND
 
-1. **Khởi động dự án**
+4. **Khởi động dự án**
 **Backend**
 npm run server
 **Frontend**
