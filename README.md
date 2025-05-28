@@ -29,14 +29,15 @@ MERN Stack: Kết hợp các công nghệ trên tạo nên ứng dụng full-sta
 git clone https://github.com/21021660-LuongPhungNham/DocOnTime.git
 cd DocOnTime
 
-2. **Cài đặt dependencies**
+2. **Cài đặt nhanh**
 **Backend**
 cd ../backend
 npm install
 **Frontend**
 cd ../frontend
 npm install
-3.**Tạo file .env trong thư mục backend**
+
+3. **Tạo file .env trong thư mục backend**
 DATABASE_URL=your_mongodb_connection_string
 CLOUD_NAME=your_cloudinary_cloud_name
 CLOUD_API_KEY=your_cloudinary_api_key
@@ -48,7 +49,8 @@ PAYOS_CLIENT_ID=your_payos_client_id
 PAYOS_API_KEY=your_payos_api_key
 PAYOS_CHECKSUM_KEY=your_payos_checksum_key
 CURRENCY=VND
-4.**Khởi động dự án**
+
+1. **Khởi động dự án**
 **Backend**
 npm run server
 **Frontend**
