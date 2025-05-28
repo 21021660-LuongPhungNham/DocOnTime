@@ -298,7 +298,7 @@ const UserPayment = async (req, res) => {
             return res.json({ success: false, message: "Số tiền không hợp lệ" });
         }
 
-        // xu ly ramdom code
+        // xu ly ramdom ordercode
         const ramdomOrderCode = () => Date.now() + Math.floor(Math.random() * 10000);
 
         const payOption = {
@@ -306,8 +306,8 @@ const UserPayment = async (req, res) => {
             receipt: appointmentId,
             orderCode: ramdomOrderCode(),
             description: `${appointment?.userData?.name} Thanh toán lịch hẹn`.slice(0, 25),
-            returnUrl: `http://localhost:5173/payment_success?appointmentId=${appointmentId}`,
-            cancelUrl: `http://localhost:5173/payment_cancel?appointmentId=${appointmentId}`,
+            returnUrl: `http://localhost:5173/my-appointments?appointmentId=${appointmentId}`,
+            cancelUrl: `http://localhost:5173/my-appointments?appointmentId=${appointmentId}`,
             buyerName: appointment?.userData?.name || 'Khách hàng',
             buyerEmail: appointment?.userData?.email || 'khachhang@example.com',
             buyerPhone: appointment?.userData?.phone || '0123456789',
@@ -352,37 +352,69 @@ const UserPayment = async (req, res) => {
 //kiem tra trang thai don thanh toan
 const CheckPaymentStatus = async (req, res) => {
     try {
-        const { appointmentId } = req.body;
-        const appointment = await appointmentModels.findById(appointmentId);
+        const { orderCode } = req.body;
 
-        if (!appointment) {
-            return res.json({ success: false, message: "Không tìm thấy lịch hẹn" });
+        if (!orderCode) {
+            return res.json({ success: false, message: 'Thiếu orderCode' });
         }
 
-        const { data } = await axios.get(`https://api-merchant.payos.vn/v2/payment-requests/${appointment.orderCode}`, {
+        console.log('orderCode:', orderCode);
+
+        const { data } = await axios.get(`https://api-merchant.payos.vn/v2/payment-requests/${orderCode}`, {
             headers: {
                 'x-client-id': process.env.PAYOS_CLIENT_ID,
                 'x-api-key': process.env.PAYOS_API_KEY
             }
         });
 
-        if (data.status === 'PAID') {
-            appointment.payment = true;
-            try {
-                await appointment.save();
-                console.log('Trạng thái thanh toán đã được cập nhật thành công');
-            } catch (err) {
-                console.error('Lỗi khi lưu trạng thái thanh toán:', err);
+        console.log('PayOS status:', data.status);
+
+        const status = data.status;
+
+        if (status === 'PAID') {
+            const appointment = await appointmentModels.findOneAndUpdate(
+                { orderCode },
+                { payment: true },
+                { new: true }
+            );
+
+            if (!appointment) {
+                console.log('Không tìm thấy appointment với orderCode:', orderCode);
+                return res.json({ success: false, message: 'Không tìm thấy appointment' });
             }
+
+            return res.json({ success: true, status: data.status, appointment });
         }
 
         return res.json({ success: true, status: data.status });
 
     } catch (err) {
+        console.error('Lỗi:', err);
         return res.json({ success: false, message: "Lỗi kiểm tra thanh toán", error: err.message });
     }
 };
 
 
-export { getUserProfile, scheduleAppointment, signUpUser, userLogin, userProfileUpdate, fetchUserAppointments, cancelAppointment, UserPayment, CheckPaymentStatus };
+// web hook
+const webhookHandler = async (req, res) => {
+    try {
+        console.log("Webhook received:", req.body);
+        const { orderCode, status } = req.body;
+
+        const appointment = await appointmentModels.findOne({ orderCode });
+
+        if (!appointment) return res.send('Appointment not found');
+
+        if (status === 'PAID') {
+            appointment.payment = true;
+            await appointment.save();
+        }
+
+        res.send('OK');
+    } catch (err) {
+        res.send('Webhook error');
+    }
+}
+
+export { getUserProfile, scheduleAppointment, signUpUser, userLogin, userProfileUpdate, fetchUserAppointments, cancelAppointment, UserPayment, CheckPaymentStatus, webhookHandler };
 

@@ -23,11 +23,10 @@ app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
-// 
+//
 app.use('/api/admin', adminRoutes)
 app.use('/api/doctor', doctorRoutes)
 app.use('/api/user', userRoutes)
-
 app.get('/', (req, res) => {
     res.send('working');
 });
