@@ -33,6 +33,15 @@ const MyAppointment = () => {
         }
     }, [token])
 
+    useEffect(() => {
+        const queryParams = new URLSearchParams(window.location.search);
+        const orderCode = queryParams.get('orderCode');
+
+        if (orderCode) {
+            checkPaymentStatus(orderCode);
+        }
+    }, []);
+
     // huy lich hen sau khi da dat
     const cancelAppointment = async (appointmentId) => {
         try {
@@ -68,6 +77,25 @@ const MyAppointment = () => {
             toast.error("Lỗi thanh toán: " + err.message);
         }
     };
+
+    const checkPaymentStatus = async (orderCode) => {
+        try {
+            const { data } = await axios.post(`${UrlBE}/api/user/check_payment_status`, { orderCode }, {
+                headers: { token }
+            });
+
+            if (data.success && data.status === 'PAID') {
+                toast.success('Thanh toán thành công!');
+                fetchUserAppointment(); // refresh danh sách
+            } else {
+                toast.warn('Thanh toán chưa hoàn tất!');
+            }
+        } catch (err) {
+            console.error(err);
+            toast.error(`Lỗi kiểm tra trạng thái thanh toán: ${err.response ? err.response.data.message : err.message}`);
+        }
+    };
+
 
     return (
         <div>

@@ -11,8 +11,9 @@ const Navbar = () => {
     const { token, setToken, userData } = useContext(AppContext)
 
     const handleLogout = () => {
-        localStorage.removeItem("token"); // Xóa token khỏi localStorage
-        setToken(null); // Cập nhật state về null để re-render giao diện
+        localStorage.removeItem("token");
+        setToken(null);
+        navigate('/');
     };
 
     return (

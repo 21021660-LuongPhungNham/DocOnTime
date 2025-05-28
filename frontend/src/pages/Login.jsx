@@ -63,7 +63,7 @@ const Login = () => {
         <p className="text-sm text-gray-500 w-full text-center">
           Vui lòng {state === "Đăng ký" ? "đăng ký" : "đăng nhập"} để đặt lịch hẹn
         </p>
-
+        {/* ..name... */}
         {state === "Đăng ký" && (
           <div className="w-full">
             <label className="block font-medium text-gray-600 mb-1">Họ và tên</label>
